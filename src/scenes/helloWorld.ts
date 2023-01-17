@@ -17,7 +17,7 @@ export class HelloWorld extends Container {
         this.sprite.x = window.innerWidth / 2 - this.sprite.width / 2;
         this.sprite.y = window.innerHeight / 2 - this.sprite.height / 2;
         this.addChild(this.sprite);
-        this.app.renderer.backgroundColor = 0xa00203;
+        this.app.renderer.backgroundColor = 0xaFF203;
 
         // Handle window resizing
         window.addEventListener('resize', (e) => {
