@@ -7,13 +7,18 @@ export class Figure extends Container{
     private _squareFigure: PIXI.Graphics;
     private _squareMask: PIXI.Graphics;
     private _trueColor: number;
+    public _wasClicked: boolean;
+    public _wasGuessed: boolean;
+
+    public clickOnFigure: Function;  // function added in onclick handler so it can be accesed in parrent class  
 
     constructor(color:number){
         super();
         this._squareFigure = new PIXI.Graphics();
         this._squareMask = new PIXI.Graphics();
         this._trueColor = color;
-
+        this._wasClicked = false;
+        this._wasGuessed = false;
         
         this.setupFigure();
 
@@ -24,7 +29,7 @@ export class Figure extends Container{
         this._squareFigure.beginFill(this._trueColor);
         this._squareFigure.drawRect(0,0,100,100);
         this._squareFigure.endFill();
-
+    
         const text = new PIXI.Text('?', {
             fontFamily: 'Arial',
             bold: true,
@@ -51,15 +56,29 @@ export class Figure extends Container{
     }
 
     private onFigureClicked():void{
-       // this._squareMask.visible = false;
+        this._squareMask.interactive = false;
+        this.clickOnFigure(this);        // sends click info to parent class
+        
         gsap.to(this._squareMask,{alpha: 0,duration: 0.25, onComplete: ()=>{
-            this._squareMask.interactive = false;
+            this._wasClicked = true;
             gsap.to(this._squareFigure,{alpha: 1, duration: 0.25})
         }});
+
     }
 
     public resetFigure():void{
-        this._squareMask.alpha = 1;
-        this._squareMask.interactive = true;
+        gsap.delayedCall(1,()=>{
+            this._wasClicked = false;
+            this._squareMask.alpha = 1;
+            this._squareMask.interactive = true;
+        }) ;
+    }
+
+    public getTrueColor():number{
+        return this._trueColor;
+    }
+
+    public setMaskInteractivity(interactivity:boolean):void{
+        this._squareMask.interactive = interactivity;
     }
 }
