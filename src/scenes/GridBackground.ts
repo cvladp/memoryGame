@@ -9,11 +9,11 @@ export class GridBackground extends Container{
 
     private _background: PIXI.Graphics;
     private _figure: Figure[];
-    private _allowedColors = [0xfc0303,0xfcf803,0x1cfc03,0x03f4fc,0x030ffc,0xf803fc, 0xfc0303,0xfcf803,0x1cfc03,0x03f4fc,0x030ffc,0xf803fc];
     private _firstPick: Figure|null = null;
     private _secondPick: Figure|null = null;
     private _counter: Counter;
     private _endPopup:EndPopup;
+    private static numberOfSimbols = 12;
 
 
     constructor(){
@@ -42,7 +42,7 @@ export class GridBackground extends Container{
 
     private addCounter(){
         this._counter.x = 20;
-        this._counter.y = 100;
+        this._counter.y = window.innerHeight/2 - this._counter.height;
         this.addChild(this._counter);
     }
 
@@ -58,10 +58,9 @@ export class GridBackground extends Container{
         let yPos = 50;
         let xPos = 100;
         let yDeviation = 200;
-        this.shuffleArray(this._allowedColors);
 
-        for(let i = 0, y = 0; i < 12; i++,y++){
-            this._figure[i] = new Figure(this._allowedColors[i]);
+        for(let i = 0, y = 0,figureID = 0; i < GridBackground.numberOfSimbols; i++,y++,figureID++){
+            this._figure[i] = new Figure(figureID);
 
             this._figure[i].clickOnFigure = (figure:Figure)=>{  // RECIVE CLICK EVENT INFO FROM CHILD CLASS
                 this.figureClickedEvent(figure);
@@ -71,9 +70,13 @@ export class GridBackground extends Container{
                 y = 0;
                 yPos += yDeviation;
             }
+            if(i%2 ==0){
+                figureID--;
+            }
             this._figure[i].x = xPos + y * 200;
-            this._figure[i].y = yPos; 
+            this._figure[i].y = yPos;
         }
+        this.shuffleArray(this._figure);
 
         gridContainer.x = this._background.width/3 ;//- (gridContainer.width/2 + this._figure[0].width);
         gridContainer.y = this._background.height/2 - (gridContainer.height/2 + 50 + yDeviation);      // 50 - initial yPos
@@ -81,23 +84,27 @@ export class GridBackground extends Container{
         this._background.addChild(gridContainer);
     }
 
-    private shuffleArray(array:number[]){
-        let currentIndex = array.length,  randomIndex;
+    private shuffleArray(array:Figure[]){
+        let currentIndex = array.length;
+        let randomIndex;
+        let xval;
+        let yval;
 
         while (currentIndex != 0) {
       
           randomIndex = Math.floor(Math.random() * currentIndex);
           currentIndex--;
 
-          [array[currentIndex], array[randomIndex]] = [
-            array[randomIndex], array[currentIndex]];
+          xval = array[currentIndex].x;
+          yval = array[currentIndex].y;
+          array[currentIndex].x = array[randomIndex].x;
+          array[currentIndex].y = array[randomIndex].y;
+          array[randomIndex].x = xval;
+          array[randomIndex].y = yval;  
         }
-      
-        return array;
     }
 
     private figureClickedEvent(figure:Figure){
-        console.log(figure.getTrueColor().toString(16));
         
         if(this._firstPick == null) {
             this._firstPick = figure;
@@ -116,7 +123,7 @@ export class GridBackground extends Container{
     }
 
     private checkMatch():void{
-        if(this._firstPick!=null && this._secondPick != null && this._firstPick.getTrueColor() == this._secondPick.getTrueColor() ){
+        if(this._firstPick!=null && this._secondPick != null && this._firstPick.getFigureId() == this._secondPick.getFigureId() ){
             this.handleWinCase();
         }else{
         }
@@ -162,4 +169,5 @@ export class GridBackground extends Container{
     private handleEndGame():void{
         this._endPopup.playEndAnimation(this._counter.getCounterValues());
     }
+
 }

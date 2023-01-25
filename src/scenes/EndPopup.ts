@@ -35,14 +35,15 @@ export class EndPopup extends PIXI.Container{
             fontSize: 60,
             padding: 1,
             stroke: "#4ff014",
-            strokeThickness: 2
+            strokeThickness: 2,
+            align: 'center',
         });
         this.message.style = textStyle;
         this._background.addChild(this.message);
     }
 
     public playEndAnimation(guesses: number):void{
-        this.message.text = 'Felicitari/n ai rezolvat jocu in ' + guesses.toString() + ' incercari';
+        this.message.text = 'Felicitari !\nAi rezolvat jocu in ' + guesses.toString() + ' incercari.';
         this.positionText();
         this._background.y = -500;
         gsap.to(this._background, {alpha:1, duration: 2, y: 0});

@@ -9,17 +9,18 @@ export class Figure extends Container{
     private _trueColor: number;
     public _wasClicked: boolean;
     public _wasGuessed: boolean;
+    private _figureID: number;
 
     public clickOnFigure: Function;  // function added in onclick handler so it can be accesed in parrent class  
 
-    constructor(color:number){
+    constructor(id:number){
         super();
         this._squareFigure = new PIXI.Graphics();
         this._squareMask = new PIXI.Graphics();
-        this._trueColor = color;
+        this._trueColor = id * 0x123456;
         this._wasClicked = false;
         this._wasGuessed = false;
-        
+        this._figureID = id;
         this.setupFigure();
 
     }
@@ -74,8 +75,8 @@ export class Figure extends Container{
         }) ;
     }
 
-    public getTrueColor():number{
-        return this._trueColor;
+    public getFigureId():number{
+        return this._figureID;
     }
 
     public setMaskInteractivity(interactivity:boolean):void{
