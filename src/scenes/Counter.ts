@@ -54,4 +54,8 @@ export class Counter extends PIXI.Container{
     private resetCounter():void{
         this.counterValue = 0;
     }
+
+    public getCounterValues():number{
+        return this.counterValue;
+    }
 }

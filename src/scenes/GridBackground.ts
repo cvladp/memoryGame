@@ -2,6 +2,8 @@ import { Container } from "pixi.js";
 import * as PIXI from 'pixi.js';
 import { Figure } from "./Figure";
 import { Counter } from "./Counter";
+import { EndPopup } from "./EndPopup";
+
 
 export class GridBackground extends Container{
 
@@ -11,6 +13,7 @@ export class GridBackground extends Container{
     private _firstPick: Figure|null = null;
     private _secondPick: Figure|null = null;
     private _counter: Counter;
+    private _endPopup:EndPopup;
 
 
     constructor(){
@@ -22,6 +25,7 @@ export class GridBackground extends Container{
         this._background.endFill();
         this._figure = [];
         this._counter = new Counter();
+        this._endPopup = new EndPopup();
 
         this.onAddedToStage();
 
@@ -33,6 +37,7 @@ export class GridBackground extends Container{
         this.populateGridWithFigures();
         this.addChild(this._background);
         this.addCounter();
+        this.addChild(this._endPopup);
     }
 
     private addCounter(){
@@ -105,17 +110,15 @@ export class GridBackground extends Container{
         }
 
         if(this._secondPick != null){
-            this.checkMatch();
             this._counter.incrementCounter();
+            this.checkMatch();
         }
     }
 
     private checkMatch():void{
-        if(this._firstPick!=null && this._secondPick!=null && this._firstPick.getTrueColor() == this._secondPick.getTrueColor() ){
-            // console.log("WIN");
+        if(this._firstPick!=null && this._secondPick != null && this._firstPick.getTrueColor() == this._secondPick.getTrueColor() ){
             this.handleWinCase();
         }else{
-            // console.log('LOSE');
         }
         this._secondPick = this._firstPick = null;
 
@@ -137,5 +140,26 @@ export class GridBackground extends Container{
         if(this._secondPick){
             this._secondPick._wasGuessed = true;
         }
+
+        this.checkForEndGame();
+    }
+
+    private checkForEndGame():void{
+        let guessedElementsCounter: number = 0;
+
+        this._figure.forEach(element =>{
+            if(element._wasGuessed){
+                guessedElementsCounter++; //no win
+            }
+        });
+        if(guessedElementsCounter == this._figure.length){
+            this.handleEndGame(); // end game
+        }
+        console.log(guessedElementsCounter);
+        console.log(this._figure.length);
+    }
+
+    private handleEndGame():void{
+        this._endPopup.playEndAnimation(this._counter.getCounterValues());
     }
 }
