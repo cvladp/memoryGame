@@ -1,36 +1,52 @@
 import * as PIXI from 'pixi.js';
+import { LoaderPage } from './scenes/LoaderPage';
 import { MainGame } from './scenes/MainGame';
+import gsap from "gsap";
 
-const load = (app: PIXI.Application) => {
-    return new Promise<void>((resolve) => {
-        app.loader.add('assets/hello-world.png').load(() => {
-            resolve();
+class EntryPoint{
+    private app: PIXI.Application;
+    private loaderPage: LoaderPage;
+
+    constructor(){
+        this.app = new PIXI.Application({
+            backgroundColor: 0x2980b9,
         });
-    });
-};
+   
+        document.body.style.margin = '0';
+        this.app.renderer.view.style.position = 'absolute';
+        this.app.renderer.view.style.display = 'block';
 
-const main = async () => {
-    // Main app
-    let app = new PIXI.Application();
+        this.app.renderer.resize(window.innerWidth, window.innerHeight);
 
-    // Display application properly
-    document.body.style.margin = '0';
-    app.renderer.view.style.position = 'absolute';
-    app.renderer.view.style.display = 'block';
+        window.addEventListener('resize', (e) => {
+            this.app.renderer.resize(window.innerWidth, window.innerHeight);
+        });
 
-    // View size = windows
-    app.renderer.resize(window.innerWidth, window.innerHeight);
-    window.addEventListener('resize', (e) => {
-        app.renderer.resize(window.innerWidth, window.innerHeight);
-    });
+        document.body.appendChild(this.app.view);
+    }
 
-    // Load assets
-    await load(app);
-    document.body.appendChild(app.view);
+    public startAppLoader():void{
+        this.app.loader.onStart.add(this.onLoadingStarted.bind(this));
+        this.app.loader.onComplete.add(this.onAssetsLoaded.bind(this));
+        this.app.loader.load();
+    }
 
-    // Set scene
-    var scene = new MainGame(app);
-    app.stage.addChild(scene);
-};
+    private onLoadingStarted():void{
+        this.loaderPage = new LoaderPage();
+        this.loaderPage.x = window.innerWidth/2 - this.loaderPage.width/2;
+        this.loaderPage.y = window.innerHeight/2 - this.loaderPage.height/2;
+        this.app.stage.addChild(this.loaderPage);
+    }
 
-main();
+    private onAssetsLoaded():void{
+        gsap.delayedCall(3, ()=>{
+            const mainStage = new MainGame(this.app);
+            this.app.stage.removeChild(this.loaderPage);
+            this.loaderPage.destroy;
+            this.app.stage.addChild(mainStage);
+        })
+    }
+}
+
+const game = new EntryPoint();
+game.startAppLoader();
