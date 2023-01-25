@@ -7,6 +7,8 @@ export class GridBackground extends Container{
     private _background: PIXI.Graphics;
     private _figure: Figure[];
     private _allowedColors = [0xfc0303,0xfcf803,0x1cfc03,0x03f4fc,0x030ffc,0xf803fc, 0xfc0303,0xfcf803,0x1cfc03,0x03f4fc,0x030ffc,0xf803fc];
+    private _firstPick: Figure|null = null;
+    private _secondPick: Figure|null = null;
 
     constructor(){
         super();
@@ -15,9 +17,7 @@ export class GridBackground extends Container{
         this._background.beginFill(0xC34288);
         this._background.drawRect(0,0,window.innerWidth-100,window.innerHeight-100);
         this._background.endFill();
-
         this._figure = [];
-        // this._background.addChild(this._figure);
 
         this.onAddedToStage();
 
@@ -45,6 +45,10 @@ export class GridBackground extends Container{
 
         for(let i = 0, y = 0; i < 12; i++,y++){
             this._figure[i] = new Figure(this._allowedColors[i]);
+
+            this._figure[i].clickOnFigure = (figure:Figure)=>{  // RECIVE CLICK EVENT INFO FROM CHILD CLASS
+                this.figureClickedEvent(figure);
+            }
             gridContainer.addChild(this._figure[i]);
             if(i%4==0){
                 y = 0;
@@ -73,5 +77,52 @@ export class GridBackground extends Container{
         }
       
         return array;
+    }
+
+    private figureClickedEvent(figure:Figure){
+        console.log(figure.getTrueColor().toString(16));
+        
+        if(this._firstPick == null) {
+            this._firstPick = figure;
+        }else{
+            this._secondPick = figure; // second pick always valid only if first one was selected
+
+            for(let i =0 ; i < this._figure.length; i++){       //disables all children interactivity to block more than 2 figures clicked at a time
+                this._figure[i].setMaskInteractivity(false);
+            }
+        }
+
+        if(this._secondPick != null){
+            this.checkMatch();
+        }
+    }
+
+    private checkMatch():void{
+        if(this._firstPick!=null && this._secondPick!=null && this._firstPick.getTrueColor() == this._secondPick.getTrueColor() ){
+            // console.log("WIN");
+            this.handleWinCase();
+        }else{
+            // console.log('LOSE');
+        }
+        this._secondPick = this._firstPick = null;
+
+
+        this.resetValues();
+    }
+
+    private resetValues():void{
+       this._figure.forEach(element => {
+            if(!element._wasGuessed){
+                element.resetFigure();
+            }
+       });
+    }
+
+    private handleWinCase():void{
+        if(this._firstPick)
+        this._firstPick._wasGuessed = true;
+        if(this._secondPick){
+            this._secondPick._wasGuessed = true;
+        }
     }
 }
