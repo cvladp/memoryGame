@@ -1,6 +1,7 @@
 import { Container } from "pixi.js";
 import * as PIXI from 'pixi.js';
 import { Figure } from "./Figure";
+import { Counter } from "./Counter";
 
 export class GridBackground extends Container{
 
@@ -9,6 +10,8 @@ export class GridBackground extends Container{
     private _allowedColors = [0xfc0303,0xfcf803,0x1cfc03,0x03f4fc,0x030ffc,0xf803fc, 0xfc0303,0xfcf803,0x1cfc03,0x03f4fc,0x030ffc,0xf803fc];
     private _firstPick: Figure|null = null;
     private _secondPick: Figure|null = null;
+    private _counter: Counter;
+
 
     constructor(){
         super();
@@ -18,6 +21,7 @@ export class GridBackground extends Container{
         this._background.drawRect(0,0,window.innerWidth-100,window.innerHeight-100);
         this._background.endFill();
         this._figure = [];
+        this._counter = new Counter();
 
         this.onAddedToStage();
 
@@ -28,8 +32,16 @@ export class GridBackground extends Container{
     private onAddedToStage(){
         this.populateGridWithFigures();
         this.addChild(this._background);
-
+        this.addCounter();
     }
+
+    private addCounter(){
+        this._counter.x = 20;
+        this._counter.y = 100;
+        this.addChild(this._counter);
+    }
+
+
 
     private onResize():void{
         this._background.width = window.innerWidth - 100;
@@ -58,7 +70,7 @@ export class GridBackground extends Container{
             this._figure[i].y = yPos; 
         }
 
-        gridContainer.x = this._background.width/2 - (gridContainer.width/2 + this._figure[0].width);
+        gridContainer.x = this._background.width/3 ;//- (gridContainer.width/2 + this._figure[0].width);
         gridContainer.y = this._background.height/2 - (gridContainer.height/2 + 50 + yDeviation);      // 50 - initial yPos
 
         this._background.addChild(gridContainer);
@@ -94,6 +106,7 @@ export class GridBackground extends Container{
 
         if(this._secondPick != null){
             this.checkMatch();
+            this._counter.incrementCounter();
         }
     }
 
