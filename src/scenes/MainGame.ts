@@ -4,8 +4,6 @@ import { GridBackground } from './GridBackground';
 export class MainGame extends Container {
     private _app: Application;
     private _gridBackground: GridBackground;
-    // sprite: Sprite;
-    // state: { velocity: { x: number; y: number } };
 
     constructor(app: Application) {
         super();
@@ -15,8 +13,6 @@ export class MainGame extends Container {
         // this.sprite = new Sprite(
         //     app.loader.resources['assets/hello-world.png'].texture
         // );
-        // this.sprite.x = window.innerWidth / 2 - this.sprite.width / 2;
-        // this.sprite.y = window.innerHeight / 2 - this.sprite.height / 2;
       
      //   this.addChild(this.sprite);
         this._app.renderer.backgroundColor = 0xbAAAAA;
