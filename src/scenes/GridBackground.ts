@@ -1,8 +1,9 @@
-import { Container } from "pixi.js";
+import { Container, Sprite } from "pixi.js";
 import * as PIXI from 'pixi.js';
 import { Figure } from "./Figure";
 import { Counter } from "./Counter";
 import { EndPopup } from "./EndPopup";
+import { AssetsName } from "../system/AssetsName";
 
 
 export class GridBackground extends Container{
@@ -14,9 +15,10 @@ export class GridBackground extends Container{
     private _counter: Counter;
     private _endPopup:EndPopup;
     private static numberOfSimbols = 12;
+    private loader :PIXI.Loader;
 
 
-    constructor(){
+    constructor(loader:PIXI.Loader){
         super();
         this._background = new PIXI.Graphics;
         this._background.lineStyle(10, 0xFFBD01, 1);
@@ -27,6 +29,7 @@ export class GridBackground extends Container{
         this._counter = new Counter();
         this._endPopup = new EndPopup();
         this._endPopup.clickOnReset = this.resetBtnClickHandler.bind(this);
+        this.loader = loader
 
         this.onAddedToStage();
 
@@ -78,9 +81,11 @@ export class GridBackground extends Container{
         let yPos = 50;
         let xPos = 100;
         let yDeviation = 200;
+        let texture: PIXI.Texture;
 
         for(let i = 0, y = 0,figureID = 0; i < GridBackground.numberOfSimbols; i++,y++,figureID++){
-            this._figure[i] = new Figure(figureID);
+            texture = this.loader.resources['HP'+(figureID+1).toString()].texture;
+            this._figure[i] = new Figure(figureID,texture);
 
             this._figure[i].clickOnFigure = (figure:Figure)=>{  // RECIVE CLICK EVENT INFO FROM CHILD CLASS
                 this.figureClickedEvent(figure);
@@ -97,10 +102,8 @@ export class GridBackground extends Container{
             this._figure[i].y = yPos;
         }
         this.shuffleArray(this._figure);
-
         gridContainer.x = this._background.width/3 ;//- (gridContainer.width/2 + this._figure[0].width);
         gridContainer.y = this._background.height/2 - (gridContainer.height/2 + 50 + yDeviation);      // 50 - initial yPos
-
         this._background.addChild(gridContainer);
     }
 

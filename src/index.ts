@@ -2,6 +2,7 @@ import * as PIXI from 'pixi.js';
 import { LoaderPage } from './scenes/LoaderPage';
 import { MainGame } from './scenes/MainGame';
 import gsap from "gsap";
+import { AssetsName } from './system/AssetsName';
 
 class EntryPoint{
     private app: PIXI.Application;
@@ -26,6 +27,9 @@ class EntryPoint{
     }
 
     public startAppLoader():void{
+        for(let i = 1; i < 7; i++){
+            this.app.loader.add(AssetsName.SYMBOL_NAME+i.toString(),'assets/HP'+i+'.png');
+        }
         this.app.loader.onStart.add(this.onLoadingStarted.bind(this));
         this.app.loader.onComplete.add(this.onAssetsLoaded.bind(this));
         this.app.loader.load();
