@@ -64,10 +64,16 @@ export class Figure extends Container{
             this._wasClicked = true;
             gsap.to(this._squareFigure,{alpha: 1, duration: 0.25})
         }});
-
     }
 
-    public resetFigure():void{
+    public fullResetFigure(){      // used for reset after game ends
+        this._wasClicked = false;
+        this._wasGuessed = false;
+        this._squareMask.alpha = 1;
+        this._squareMask.interactive = true;
+    }
+ 
+    public resetFigure():void{      // used for reset after comparing 2 non matching figures
         gsap.delayedCall(1,()=>{
             this._wasClicked = false;
             this._squareMask.alpha = 1;

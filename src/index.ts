@@ -41,8 +41,8 @@ class EntryPoint{
     private onAssetsLoaded():void{
         gsap.delayedCall(3, ()=>{
             const mainStage = new MainGame(this.app);
-            this.app.stage.removeChild(this.loaderPage);
             this.loaderPage.destroy;
+            this.app.stage.removeChild(this.loaderPage);
             this.app.stage.addChild(mainStage);
         })
     }

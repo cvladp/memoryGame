@@ -26,6 +26,7 @@ export class GridBackground extends Container{
         this._figure = [];
         this._counter = new Counter();
         this._endPopup = new EndPopup();
+        this._endPopup.clickOnReset = this.resetBtnClickHandler.bind(this);
 
         this.onAddedToStage();
 
@@ -51,6 +52,25 @@ export class GridBackground extends Container{
     private onResize():void{
         this._background.width = window.innerWidth - 100;
         this._background.height = window.innerHeight - 100;
+    }
+
+    private resetBtnClickHandler():void{
+        console.log('RESET');
+        this.resetCounter();
+        this.resetGrid();
+    }
+
+    private resetCounter(){
+        this._counter.resetCounter();
+    }
+
+    private resetGrid(){
+        this._firstPick = this._secondPick = null;
+
+        this._figure.forEach(element => {
+            element.fullResetFigure();
+        });
+        this.shuffleArray(this._figure);
     }
 
     private populateGridWithFigures():void{
