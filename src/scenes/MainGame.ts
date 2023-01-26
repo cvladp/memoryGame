@@ -8,15 +8,8 @@ export class MainGame extends Container {
     constructor(app: Application) {
         super();
         this._app = app;
-       // this.state = { velocity: { x: 1, y: 1 } };
-
-        // this.sprite = new Sprite(
-        //     app.loader.resources['assets/hello-world.png'].texture
-        // );
-      
-     //   this.addChild(this.sprite);
         this._app.renderer.backgroundColor = 0xbAAAAA;
-        this._gridBackground = new GridBackground();
+        this._gridBackground = new GridBackground(this._app.loader);
         this.onAddedToStage();
 
         // Handle window resizing

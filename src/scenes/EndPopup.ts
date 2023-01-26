@@ -84,7 +84,7 @@ export class EndPopup extends PIXI.Container{
 
     private positionText():void{
         this.message.x = this._background.width/2 - this.message.width/2;
-        this.message.y = this._background.height/2 - this.message.height/2;
+        this.message.y = this._background.height/2 - this.message.height;
     }
 
     private showResetButton():void{
