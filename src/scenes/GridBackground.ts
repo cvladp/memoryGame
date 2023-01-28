@@ -17,13 +17,17 @@ export class GridBackground extends Container{
     private static numberOfSimbols = 12;
     private loader :PIXI.Loader;
 
+    private _windowDiagonal:number;
+
 
     constructor(loader:PIXI.Loader){
         super();
+
+        this._windowDiagonal = Math.sqrt(window.outerWidth*window.outerWidth + window.outerHeight*window.outerHeight); 
         this._background = new PIXI.Graphics;
         this._background.lineStyle(10, 0xFFBD01, 1);
         this._background.beginFill(0xC34288);
-        this._background.drawRect(0,0,window.innerWidth-50,window.innerHeight-50);
+        this._background.drawRect(0,0,window.innerWidth,window.innerHeight);
         this._background.endFill();
         this._figure = [];
         this._counter = new Counter();
@@ -34,6 +38,7 @@ export class GridBackground extends Container{
         this.onAddedToStage();
 
         window.addEventListener('resize', this.onResize.bind(this));
+        this.onResize();
     }
 
 
@@ -42,24 +47,38 @@ export class GridBackground extends Container{
         this.addChild(this._background);
         this.addCounter();
         this.addChild(this._endPopup);
-        this.onResize();
+
     }
 
     private addCounter(){
         this._counter.x = this._background.x + 50;
-        this._counter.y = window.innerHeight/2 - this._counter.height;
+        this._counter.y = window.innerHeight/2 - this._counter.height/2;
+        this._counter.scale = new PIXI.Point((this._windowDiagonal/1300)/2, (this._windowDiagonal/1300)/2);
         this.addChild(this._counter);
     }
 
     private onResize():void{
 
-        this._background.width = window.innerWidth - 50;
-        this._background.height = window.innerHeight - 50;
-        this._background.x = window.innerWidth - this._background.width - 25;
+        var w = window.outerWidth;
+        var h = window.outerHeight;
+        this._windowDiagonal =  Math.sqrt(w*w + h*h);  // window diagonal length
+        console.log(this._windowDiagonal);
+   
+
+      
+        this._background.width = window.innerWidth;// + window.innerWidth/ window.innerHeight;
+        this._background.height = window.innerHeight;
+
+        
+
         this._counter.x = this._background.x + 50;
-        this._counter.y = window.innerHeight/2 - this._counter.height;
+        this._counter.y = window.innerHeight/2 - this._counter.height/2;
        
-       this._counter.scale = new PIXI.Point(this._background.width/1700, this._background.width/1700);
+        this._counter.scale = new PIXI.Point((this._windowDiagonal/1300)/2, (this._windowDiagonal/1300)/2);
+
+        this._endPopup.width = window.innerWidth;
+        this._endPopup.height = window.innerHeight;
+
     }
 
     private resetBtnClickHandler():void{

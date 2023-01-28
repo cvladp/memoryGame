@@ -11,23 +11,13 @@ export class MainGame extends Container {
         this._app.renderer.backgroundColor = 0xbAAAAA;
         this._gridBackground = new GridBackground(this._app.loader);
         this.onAddedToStage();
-
-        // Handle window resizing
-        window.addEventListener('resize', this.onResize.bind(this));
-    }
-
-    private onResize():void{
-        // this._gridBackground.x = window.innerWidth/2 - this._gridBackground.width/2;
-        // this._gridBackground.y = window.innerHeight/2 - this._gridBackground.height/2
     }
 
     private onAddedToStage(){
-      this.addgridbackground();
+        this.addgridbackground();
     }
 
     private addgridbackground():void{
-        this._gridBackground.x = window.innerWidth/2 - this._gridBackground.width/2;
-        this._gridBackground.y = window.innerHeight/2 - this._gridBackground.height/2
         this.addChild(this._gridBackground);
     }
 
