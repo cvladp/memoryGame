@@ -17,8 +17,8 @@ export class MainGame extends Container {
     }
 
     private onResize():void{
-        this._gridBackground.x = window.innerWidth/2 - this._gridBackground.width/2;
-        this._gridBackground.y = window.innerHeight/2 - this._gridBackground.height/2
+        // this._gridBackground.x = window.innerWidth/2 - this._gridBackground.width/2;
+        // this._gridBackground.y = window.innerHeight/2 - this._gridBackground.height/2
     }
 
     private onAddedToStage(){

@@ -23,7 +23,7 @@ export class GridBackground extends Container{
         this._background = new PIXI.Graphics;
         this._background.lineStyle(10, 0xFFBD01, 1);
         this._background.beginFill(0xC34288);
-        this._background.drawRect(0,0,window.innerWidth-100,window.innerHeight-100);
+        this._background.drawRect(0,0,window.innerWidth-50,window.innerHeight-50);
         this._background.endFill();
         this._figure = [];
         this._counter = new Counter();
@@ -42,19 +42,24 @@ export class GridBackground extends Container{
         this.addChild(this._background);
         this.addCounter();
         this.addChild(this._endPopup);
+        this.onResize();
     }
 
     private addCounter(){
-        this._counter.x = 20;
+        this._counter.x = this._background.x + 50;
         this._counter.y = window.innerHeight/2 - this._counter.height;
         this.addChild(this._counter);
     }
 
-
-
     private onResize():void{
-        this._background.width = window.innerWidth - 100;
-        this._background.height = window.innerHeight - 100;
+
+        this._background.width = window.innerWidth - 50;
+        this._background.height = window.innerHeight - 50;
+        this._background.x = window.innerWidth - this._background.width - 25;
+        this._counter.x = this._background.x + 50;
+        this._counter.y = window.innerHeight/2 - this._counter.height;
+       
+       this._counter.scale = new PIXI.Point(this._background.width/1700, this._background.width/1700);
     }
 
     private resetBtnClickHandler():void{
