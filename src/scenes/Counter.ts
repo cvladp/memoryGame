@@ -8,6 +8,8 @@ export class Counter extends PIXI.Container{
         super();
         this.counterValue = 0;
         this.setCounterText();
+        window.addEventListener('resize', this.onResize.bind(this));
+
     }
 
     private setCounterText():void{
@@ -35,6 +37,10 @@ export class Counter extends PIXI.Container{
 
         this.addChild(this.counterText);
         this.addChild(this.counterValueText);
+    }
+
+    private onResize(){
+  
     }
 
     private updateCounterPosition():void{

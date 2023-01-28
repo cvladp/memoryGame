@@ -19,11 +19,16 @@ class EntryPoint{
 
         this.app.renderer.resize(window.innerWidth, window.innerHeight);
 
-        window.addEventListener('resize', (e) => {
-            this.app.renderer.resize(window.innerWidth, window.innerHeight);
-        });
+        window.addEventListener('resize', this.onResize.bind(this));
 
         document.body.appendChild(this.app.view);
+    }
+
+    private onResize():void{
+        this.app.renderer.resize(window.innerWidth, window.innerHeight);
+        this.loaderPage.x = window.innerWidth/2 - this.loaderPage.width/2;
+        this.loaderPage.y = window.innerHeight/2 - this.loaderPage.height/2;
+        this.loaderPage.scale = new PIXI.Point(window.innerWidth / 1080, window.innerWidth / 1080);
     }
 
     public startAppLoader():void{
@@ -37,8 +42,10 @@ class EntryPoint{
 
     private onLoadingStarted():void{
         this.loaderPage = new LoaderPage();
+        this.loaderPage.scale = new PIXI.Point(window.innerWidth / 1080, window.innerWidth / 1080);
         this.loaderPage.x = window.innerWidth/2 - this.loaderPage.width/2;
         this.loaderPage.y = window.innerHeight/2 - this.loaderPage.height/2;
+        this.loaderPage.scale = new PIXI.Point(window.innerWidth / 1080, window.innerWidth / 1080);
         this.app.stage.addChild(this.loaderPage);
     }
 

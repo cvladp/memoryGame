@@ -22,7 +22,7 @@ export class LoaderPage extends PIXI.Container{
             ],
             fillGradientType: 1,
             fontFamily: "Comic Sans MS",
-            fontSize: 200,
+            fontSize: 100,
             padding: 1,
             stroke: "#4ff014",
             strokeThickness: 2
@@ -40,4 +40,6 @@ export class LoaderPage extends PIXI.Container{
     private animateText(){
         gsap.to(this, {alpha: 1, yoyo:true, repeat: 10, duration: 0.5});
     }
+
+
 }
