@@ -16,6 +16,7 @@ export class GridBackground extends Container{
     private _endPopup:EndPopup;
     private static numberOfSimbols = 12;
     private loader :PIXI.Loader;
+    private gridContainer: PIXI.Container;
 
     private _windowDiagonal:number;
 
@@ -51,8 +52,8 @@ export class GridBackground extends Container{
     }
 
     private addCounter(){
-        this._counter.x = this._background.x + 50;
-        this._counter.y = window.innerHeight/2 - this._counter.height/2;
+        this._counter.x = this._background.x + 20;
+        this._counter.y = window.innerHeight/2 - this._counter.height;
         this._counter.scale = new PIXI.Point((this._windowDiagonal/1300)/2, (this._windowDiagonal/1300)/2);
         this.addChild(this._counter);
     }
@@ -69,10 +70,13 @@ export class GridBackground extends Container{
         this._background.width = window.innerWidth;// + window.innerWidth/ window.innerHeight;
         this._background.height = window.innerHeight;
 
+        //this.gridContainer.scale = new PIXI.Point((this._windowDiagonal/1300)/1.5, (this._windowDiagonal/1300)/1.5);
+        // this.gridContainer.x = this._background.width/2 - this.gridContainer.width/2 ;//- (gridContainer.width/2 + this._figure[0].width);
+        // this.gridContainer.y = this._background.height/2 - this.gridContainer.height;      //
         
 
-        this._counter.x = this._background.x + 50;
-        this._counter.y = window.innerHeight/2 - this._counter.height/2;
+        this._counter.x = this._background.x + 20;
+        this._counter.y = window.innerHeight/2 - this._counter.height;
        
         this._counter.scale = new PIXI.Point((this._windowDiagonal/1300)/2, (this._windowDiagonal/1300)/2);
 
@@ -101,10 +105,9 @@ export class GridBackground extends Container{
     }
 
     private populateGridWithFigures():void{
-        let gridContainer = new PIXI.Container();
-        let yPos = 50;
-        let xPos = 100;
-        let yDeviation = 200;
+        this.gridContainer = new PIXI.Container();
+        let yPos = 0;
+        let xPos = 0;
         let texture: PIXI.Texture;
 
         for(let i = 0, y = 0,figureID = 0; i < GridBackground.numberOfSimbols; i++,y++,figureID++){
@@ -114,10 +117,10 @@ export class GridBackground extends Container{
             this._figure[i].clickOnFigure = (figure:Figure)=>{  // RECIVE CLICK EVENT INFO FROM CHILD CLASS
                 this.figureClickedEvent(figure);
             }
-            gridContainer.addChild(this._figure[i]);
+            this.gridContainer.addChild(this._figure[i]);
             if(i%4==0){
                 y = 0;
-                yPos += yDeviation;
+                yPos += this._figure[0].height;
             }
             if(i%2 ==0){
                 figureID--;
@@ -126,9 +129,11 @@ export class GridBackground extends Container{
             this._figure[i].y = yPos;
         }
         this.shuffleArray(this._figure);
-        gridContainer.x = this._background.width/3 ;//- (gridContainer.width/2 + this._figure[0].width);
-        gridContainer.y = this._background.height/2 - (gridContainer.height/2 + 50 + yDeviation);      // 50 - initial yPos
-        this._background.addChild(gridContainer);
+        this.gridContainer.scale = new PIXI.Point((this._windowDiagonal/1300)/1.5, (this._windowDiagonal/1300)/1.5);
+        this.gridContainer.x = this._background.width/2 - this.gridContainer.width/2 ;//- (gridContainer.width/2 + this._figure[0].width);
+        this.gridContainer.y = this._background.height/2 - this.gridContainer.height;      // 50 - initial yPos
+
+        this._background.addChild( this.gridContainer);
     }
 
     private shuffleArray(array:Figure[]){
