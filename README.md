@@ -3,7 +3,7 @@
 
 ## Demo
 
-
+https://cvladp.github.io/memoryGame/
 
 ## Requirements
 
@@ -15,6 +15,8 @@
 
 ```bash
 npm install
+npm run build
+npm run dev
 ```
 
 ## Development
