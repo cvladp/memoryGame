@@ -11,6 +11,12 @@ export class MainGame extends Container {
         this._app.renderer.backgroundColor = 0xbAAAAA;
         this._gridBackground = new GridBackground(this._app.loader);
         this.onAddedToStage();
+
+        window.addEventListener('resize', this.onResize.bind(this));
+    }
+
+    private onResize():void{
+        
     }
 
     private onAddedToStage(){

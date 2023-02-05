@@ -1,6 +1,7 @@
 import { Container } from "pixi.js";
 import * as PIXI from 'pixi.js';
 import gsap from "gsap";
+import { EventEmitter } from "./EventEmitter";
 
 export class Figure extends Container{
 
@@ -38,7 +39,7 @@ export class Figure extends Container{
         });
 
         this._squareMask.beginFill(0xc7adff);
-        this._squareMask.drawRect(0,0,100,100);
+        this._squareMask.drawRect(0,0,150,150);
         this._squareMask.endFill();
 
         text.x = this._squareMask.width/2 - text.width/2;
@@ -60,7 +61,7 @@ export class Figure extends Container{
     private setupSprite():void{
      
         this._sprite = new PIXI.Sprite(this._texture);
-        this._sprite.scale.set(0.5);
+        this._sprite.scale.set(0.8);
         this._sprite.alpha = 0;
     }
 
@@ -72,6 +73,7 @@ export class Figure extends Container{
             this._wasClicked = true;
             gsap.to(this._sprite,{alpha: 1, duration: 0.25})
         }});
+        EventEmitter.getInstance().emit('figureClickedNotification',this._figureID);
     }
 
     public fullResetFigure(){      // used for reset after game ends
