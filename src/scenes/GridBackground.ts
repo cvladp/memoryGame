@@ -4,6 +4,7 @@ import { Figure } from "./Figure";
 import { Counter } from "./Counter";
 import { EndPopup } from "./EndPopup";
 import { AssetsName } from "../system/AssetsName";
+import { EventEmitter } from "./EventEmitter";
 
 
 export class GridBackground extends Container{
@@ -23,7 +24,7 @@ export class GridBackground extends Container{
 
     constructor(loader:PIXI.Loader){
         super();
-
+        
         this._windowDiagonal = Math.sqrt(window.outerWidth*window.outerWidth + window.outerHeight*window.outerHeight); 
         this._background = new PIXI.Graphics;
         this._background.lineStyle(10, 0xFFBD01, 1);
@@ -40,6 +41,10 @@ export class GridBackground extends Container{
 
         window.addEventListener('resize', this.onResize.bind(this));
         this.onResize();
+
+        EventEmitter.getInstance().on('figureClickedNotification', (id:number)=>{
+            console.log('CLICK on Figure id: ' + id);
+        })
     }
 
 
@@ -53,35 +58,14 @@ export class GridBackground extends Container{
 
     private addCounter(){
         this._counter.x = this._background.x + 20;
-        this._counter.y = window.innerHeight/2 - this._counter.height;
-        this._counter.scale = new PIXI.Point((this._windowDiagonal/1300)/2, (this._windowDiagonal/1300)/2);
-        this.addChild(this._counter);
+        this._counter.y = this._background.y + 5;
+        this._background.addChild(this._counter);
     }
 
     private onResize():void{
 
-        var w = window.outerWidth;
-        var h = window.outerHeight;
-        this._windowDiagonal =  Math.sqrt(w*w + h*h);  // window diagonal length
-        console.log(this._windowDiagonal);
-   
-
-      
-        this._background.width = window.innerWidth;// + window.innerWidth/ window.innerHeight;
+        this._background.width = window.innerWidth;
         this._background.height = window.innerHeight;
-
-        //this.gridContainer.scale = new PIXI.Point((this._windowDiagonal/1300)/1.5, (this._windowDiagonal/1300)/1.5);
-        // this.gridContainer.x = this._background.width/2 - this.gridContainer.width/2 ;//- (gridContainer.width/2 + this._figure[0].width);
-        // this.gridContainer.y = this._background.height/2 - this.gridContainer.height;      //
-        
-
-        this._counter.x = this._background.x + 20;
-        this._counter.y = window.innerHeight/2 - this._counter.height;
-       
-        this._counter.scale = new PIXI.Point((this._windowDiagonal/1300)/2, (this._windowDiagonal/1300)/2);
-
-        this._endPopup.width = window.innerWidth;
-        this._endPopup.height = window.innerHeight;
 
     }
 
@@ -107,10 +91,9 @@ export class GridBackground extends Container{
     private populateGridWithFigures():void{
         this.gridContainer = new PIXI.Container();
         let yPos = 0;
-        let xPos = 0;
         let texture: PIXI.Texture;
 
-        for(let i = 0, y = 0,figureID = 0; i < GridBackground.numberOfSimbols; i++,y++,figureID++){
+        for(let i = 0, j = 0,figureID = 0; i < GridBackground.numberOfSimbols; i++,j++,figureID++){
             texture = this.loader.resources['HP'+(figureID+1).toString()].texture;
             this._figure[i] = new Figure(figureID,texture);
 
@@ -119,19 +102,19 @@ export class GridBackground extends Container{
             }
             this.gridContainer.addChild(this._figure[i]);
             if(i%4==0){
-                y = 0;
+                j = 0;
                 yPos += this._figure[0].height;
             }
             if(i%2 ==0){
                 figureID--;
             }
-            this._figure[i].x = xPos + y * 200;
+            this._figure[i].x = j * this._figure[0].width;
             this._figure[i].y = yPos;
         }
         this.shuffleArray(this._figure);
         this.gridContainer.scale = new PIXI.Point((this._windowDiagonal/1300)/1.5, (this._windowDiagonal/1300)/1.5);
-        this.gridContainer.x = this._background.width/2 - this.gridContainer.width/2 ;//- (gridContainer.width/2 + this._figure[0].width);
-        this.gridContainer.y = this._background.height/2 - this.gridContainer.height;      // 50 - initial yPos
+        this.gridContainer.x = this._background.width/2 - this.gridContainer.width/3 ;//- (gridContainer.width/2 + this._figure[0].width);
+        this.gridContainer.y = this._background.height/2 - this.gridContainer.height/1.2;      // 50 - initial yPos
 
         this._background.addChild( this.gridContainer);
     }

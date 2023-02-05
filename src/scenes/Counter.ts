@@ -21,7 +21,7 @@ export class Counter extends PIXI.Container{
             ],
             fillGradientType: 1,
             fontFamily: "Comic Sans MS",
-            fontSize: 100,
+            fontSize: 30,
             padding: 1,
             stroke: "#4ff014",
             strokeThickness: 2
