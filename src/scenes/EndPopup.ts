@@ -42,15 +42,14 @@ export class EndPopup extends PIXI.Container{
             ],
             fillGradientType: 1,
             fontFamily: "Comic Sans MS",
-            fontSize: 30,
-            padding: 1,
+            fontSize: 35,
             stroke: "#4ff014",
             strokeThickness: 2,
             align: 'center',
         });
         btnTexte.style = textStyle;
-        btnTexte.x = this.resetBTN.width/2 - btnTexte.width - 40;
-        btnTexte.y = this.resetBTN.height/2 - btnTexte.height - 30;
+        btnTexte.x = this.resetBTN.width/2 - btnTexte.width -25;
+        btnTexte.y = this.resetBTN.height/2 - btnTexte.height -25;
 
         this.resetBTN.addChild(btnTexte);
     }
@@ -76,7 +75,7 @@ export class EndPopup extends PIXI.Container{
     }
 
     public playEndAnimation(guesses: number):void{
-        this.message.text = 'Felicitari !\nAi rezolvat jocul in ' + guesses.toString() + ' incercari.';
+        this.message.text = 'Congratulations !\nYou solved the game in ' + guesses.toString() + ' comparisons.';
         this.positionText();
         this._background.y = -500;
         gsap.to(this._background, {alpha:1, duration: 2, y: 0,onComplete: this.showResetButton.bind(this)});

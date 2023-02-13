@@ -39,7 +39,7 @@ export class Figure extends Container{
         });
 
         this._squareMask.beginFill(0xc7adff);
-        this._squareMask.drawRect(0,0,150,150);
+        this._squareMask.drawRect(0,0,200,200);
         this._squareMask.endFill();
 
         text.x = this._squareMask.width/2 - text.width/2;
@@ -61,7 +61,7 @@ export class Figure extends Container{
     private setupSprite():void{
      
         this._sprite = new PIXI.Sprite(this._texture);
-        this._sprite.scale.set(0.8);
+        this._sprite.scale.set(1);
         this._sprite.alpha = 0;
     }
 
