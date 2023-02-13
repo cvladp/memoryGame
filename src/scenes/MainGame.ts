@@ -13,11 +13,11 @@ export class MainGame extends Container {
         this.onAddedToStage();
     }
 
-    private onAddedToStage(){
+    private onAddedToStage() {
         this.addgridbackground();
     }
 
-    private addgridbackground():void{
+    private addgridbackground(): void {
         this.addChild(this._gridBackground);
     }
 
