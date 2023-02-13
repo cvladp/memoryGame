@@ -8,15 +8,9 @@ export class MainGame extends Container {
     constructor(app: Application) {
         super();
         this._app = app;
-        this._app.renderer.backgroundColor = 0xbAAAAA;
-        this._gridBackground = new GridBackground(this._app.loader);
+        this._app.renderer.backgroundColor = 0x000000;
+        this._gridBackground = new GridBackground(this._app);
         this.onAddedToStage();
-
-        window.addEventListener('resize', this.onResize.bind(this));
-    }
-
-    private onResize():void{
-        
     }
 
     private onAddedToStage(){

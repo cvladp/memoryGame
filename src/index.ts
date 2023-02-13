@@ -8,8 +8,12 @@ class EntryPoint{
     private app: PIXI.Application;
     private loaderPage: LoaderPage;
 
+    private appWidth:number = 1920;
+    private appHeight:number = 1080;
+    private aspectRatio = this.appWidth / this.appHeight;
+
     constructor(){
-        this.app = new PIXI.Application({
+        this.app = new PIXI.Application({width: this.appWidth, height: this.appHeight,
             backgroundColor: 0x2980b9,
         });
    
@@ -17,18 +21,26 @@ class EntryPoint{
         this.app.renderer.view.style.position = 'absolute';
         this.app.renderer.view.style.display = 'block';
 
-        this.app.renderer.resize(window.innerWidth, window.innerHeight);
-
         window.addEventListener('resize', this.onResize.bind(this));
 
         document.body.appendChild(this.app.view);
+        this.onResize();
+
     }
 
     private onResize():void{
         this.app.renderer.resize(window.innerWidth, window.innerHeight);
-        this.loaderPage.x = window.innerWidth/2 - this.loaderPage.width/2;
-        this.loaderPage.y = window.innerHeight/2 - this.loaderPage.height/2;
-        this.loaderPage.scale = new PIXI.Point(window.innerWidth / 1080, window.innerWidth / 1080);
+        this.app.stage.scale.x = this.app.renderer.width / this.appWidth;
+        this.app.stage.scale.y = this.app.renderer.height / this.appHeight;
+
+        if(this.app.renderer.width / this.app.renderer.height <= this.aspectRatio){
+            this.app.stage.scale.y = this.app.stage.scale.x;
+        }else{
+            this.app.stage.scale.x = this.app.stage.scale.y;
+        }
+
+        this.app.stage.x = window.innerWidth / 2 - this.app.stage.width/2;
+        this.app.stage.y = window.innerHeight / 2 - this.app.stage.height/2;
     }
 
     public startAppLoader():void{
@@ -42,21 +54,22 @@ class EntryPoint{
 
     private onLoadingStarted():void{
         this.loaderPage = new LoaderPage();
-        this.loaderPage.scale = new PIXI.Point(window.innerWidth / 1080, window.innerWidth / 1080);
-        this.loaderPage.x = window.innerWidth/2 - this.loaderPage.width/2;
-        this.loaderPage.y = window.innerHeight/2 - this.loaderPage.height/2;
-        this.loaderPage.scale = new PIXI.Point(window.innerWidth / 1080, window.innerWidth / 1080);
         this.app.stage.addChild(this.loaderPage);
+        this.loaderPage.x = this.app.stage.width /2 - this.loaderPage.width /2;
+        this.loaderPage.y = this.app.stage.height/2 - this.loaderPage.height /2;
     }
 
     private onAssetsLoaded():void{
-        gsap.delayedCall(3, ()=>{
+        gsap.delayedCall(0, ()=>{
             const mainStage = new MainGame(this.app);
             this.loaderPage.destroy;
             this.app.stage.removeChild(this.loaderPage);
             this.app.stage.addChild(mainStage);
-        })
+            this.onResize();
+        });
     }
+
+
 }
 
 const game = new EntryPoint();
