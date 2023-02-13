@@ -9,6 +9,8 @@ import { EventEmitter } from "./EventEmitter";
 
 export class GridBackground extends Container{
 
+    private pixiApp:PIXI.Application;
+
     private _background: PIXI.Graphics;
     private _figure: Figure[];
     private _firstPick: Figure|null = null;
@@ -16,31 +18,25 @@ export class GridBackground extends Container{
     private _counter: Counter;
     private _endPopup:EndPopup;
     private static numberOfSimbols = 12;
-    private loader :PIXI.Loader;
     private gridContainer: PIXI.Container;
 
-    private _windowDiagonal:number;
 
 
-    constructor(loader:PIXI.Loader){
-        super();
-        
-        this._windowDiagonal = Math.sqrt(window.outerWidth*window.outerWidth + window.outerHeight*window.outerHeight); 
+
+    constructor(pixiApp:PIXI.Application){
+        super(); 
+        this.pixiApp = pixiApp;
         this._background = new PIXI.Graphics;
-        this._background.lineStyle(10, 0xFFBD01, 1);
+        this._background.lineStyle(25, 0xFFBD01, 1);
         this._background.beginFill(0xC34288);
-        this._background.drawRect(0,0,window.innerWidth,window.innerHeight);
+        this._background.drawRect(0,0,1820,980);
         this._background.endFill();
         this._figure = [];
         this._counter = new Counter();
         this._endPopup = new EndPopup();
         this._endPopup.clickOnReset = this.resetBtnClickHandler.bind(this);
-        this.loader = loader
 
         this.onAddedToStage();
-
-        window.addEventListener('resize', this.onResize.bind(this));
-        this.onResize();
 
         EventEmitter.getInstance().on('figureClickedNotification', (id:number)=>{
             console.log('CLICK on Figure id: ' + id);
@@ -53,20 +49,12 @@ export class GridBackground extends Container{
         this.addChild(this._background);
         this.addCounter();
         this.addChild(this._endPopup);
-
     }
 
     private addCounter(){
-        this._counter.x = this._background.x + 20;
-        this._counter.y = this._background.y + 5;
+        this._counter.x = this._background.x + 100;
+        this._counter.y = this._background.y + this._counter.height;
         this._background.addChild(this._counter);
-    }
-
-    private onResize():void{
-
-        this._background.width = window.innerWidth;
-        this._background.height = window.innerHeight;
-
     }
 
     private resetBtnClickHandler():void{
@@ -94,7 +82,7 @@ export class GridBackground extends Container{
         let texture: PIXI.Texture;
 
         for(let i = 0, j = 0,figureID = 0; i < GridBackground.numberOfSimbols; i++,j++,figureID++){
-            texture = this.loader.resources['HP'+(figureID+1).toString()].texture;
+            texture = this.pixiApp.loader.resources['HP'+(figureID+1).toString()].texture;
             this._figure[i] = new Figure(figureID,texture);
 
             this._figure[i].clickOnFigure = (figure:Figure)=>{  // RECIVE CLICK EVENT INFO FROM CHILD CLASS
@@ -112,8 +100,7 @@ export class GridBackground extends Container{
             this._figure[i].y = yPos;
         }
         this.shuffleArray(this._figure);
-        this.gridContainer.scale = new PIXI.Point((this._windowDiagonal/1300)/1.5, (this._windowDiagonal/1300)/1.5);
-        this.gridContainer.x = this._background.width/2 - this.gridContainer.width/3 ;//- (gridContainer.width/2 + this._figure[0].width);
+        this.gridContainer.x = this._background.width/2 - this.gridContainer.width/3;
         this.gridContainer.y = this._background.height/2 - this.gridContainer.height/1.2;      // 50 - initial yPos
 
         this._background.addChild( this.gridContainer);

@@ -8,8 +8,6 @@ export class Counter extends PIXI.Container{
         super();
         this.counterValue = 0;
         this.setCounterText();
-        window.addEventListener('resize', this.onResize.bind(this));
-
     }
 
     private setCounterText():void{
@@ -17,13 +15,13 @@ export class Counter extends PIXI.Container{
             dropShadowColor: "#0d0202",
             fill: [
                 "black",
-                "#5c5c5c"
+                "#015c5c"
             ],
             fillGradientType: 1,
             fontFamily: "Comic Sans MS",
-            fontSize: 30,
+            fontSize: 90,
             padding: 1,
-            stroke: "#4ff014",
+            stroke: "#fff014",
             strokeThickness: 2
         });
         this.counterText = new PIXI.Text('Incercari');
@@ -37,10 +35,6 @@ export class Counter extends PIXI.Container{
 
         this.addChild(this.counterText);
         this.addChild(this.counterValueText);
-    }
-
-    private onResize(){
-  
     }
 
     private updateCounterPosition():void{
