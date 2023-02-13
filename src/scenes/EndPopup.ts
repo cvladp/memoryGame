@@ -8,19 +8,19 @@ export class EndPopup extends PIXI.Container{
 
     public clickOnReset: Function;
 
-    constructor(){
+    constructor(width:number, height:number){
         super();
-        this.initiateBackground();
+        this.initiateBackground(width,height);
         this.initiateText();
         this.initiateResetBtn();
     }
 
 
-    private initiateBackground(){
+    private initiateBackground(width:number,height:number){
         this._background = new PIXI.Graphics;
         this._background.lineStyle(10, 0xFFBD01, 1);
         this._background.beginFill(0xFFA500);
-        this._background.drawRect(0,0,window.innerWidth-50,window.innerHeight-50);
+        this._background.drawRect(0,0,width,height);
         this._background.endFill();
         this._background.alpha = 0;
         this.addChild(this._background);
@@ -64,7 +64,7 @@ export class EndPopup extends PIXI.Container{
                 "#5c5c5c"
             ],
             fillGradientType: 1,
-            fontFamily: "Comic Sans MS",
+            fontFamily: "sans-serif",
             fontSize: 60,
             padding: 1,
             stroke: "#4ff014",

@@ -33,7 +33,7 @@ export class GridBackground extends Container{
         this._background.endFill();
         this._figure = [];
         this._counter = new Counter();
-        this._endPopup = new EndPopup();
+        this._endPopup = new EndPopup(1820, 980);
         this._endPopup.clickOnReset = this.resetBtnClickHandler.bind(this);
 
         this.onAddedToStage();

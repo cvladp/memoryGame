@@ -18,13 +18,13 @@ export class Counter extends PIXI.Container{
                 "#015c5c"
             ],
             fillGradientType: 1,
-            fontFamily: "Comic Sans MS",
+            fontFamily: "sans-serif",
             fontSize: 90,
             padding: 1,
             stroke: "#fff014",
             strokeThickness: 2
         });
-        this.counterText = new PIXI.Text('Incercari');
+        this.counterText = new PIXI.Text('Incercari:');
         this.counterText.style = textStyle;
 
         this.counterValueText = new PIXI.Text(this.counterValue.toString());
