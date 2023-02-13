@@ -21,7 +21,8 @@ export class CompareCounter extends PIXI.Container {
             fontSize: 70,
             padding: 1,
             stroke: "#fff014",
-            strokeThickness: 2
+            strokeThickness: 2,
+            lineHeight: 1
         });
         this.counterText = new PIXI.Text('Comparisons:');
         this.counterText.style = textStyle;
