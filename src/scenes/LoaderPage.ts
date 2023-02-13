@@ -1,7 +1,7 @@
 import * as PIXI from 'pixi.js';
 import gsap from "gsap";
 
-export class LoaderPage extends PIXI.Container{
+export class LoaderPage extends PIXI.Container {
     private loadingText: PIXI.Text;
     private textStyle: PIXI.TextStyle;
 
@@ -9,7 +9,7 @@ export class LoaderPage extends PIXI.Container{
      * Constructor method for preloader class
      * Initializes the text and text style
      */
-    constructor(){
+    constructor() {
         super();
 
 
@@ -33,15 +33,15 @@ export class LoaderPage extends PIXI.Container{
         this.addChild(this.loadingText);
         this.animateText();
 
-        this.loadingText.x = this.width /2 - this.loadingText.width/2;
-        this.loadingText.y = this.height /2 - this.loadingText.height/2;
+        this.loadingText.x = this.width / 2 - this.loadingText.width / 2;
+        this.loadingText.y = this.height / 2 - this.loadingText.height / 2;
     }
 
     /** 
      * Method used for text animation during the preloader
      */
-    private animateText(){
-        gsap.to(this, {alpha: 1, yoyo:true, repeat: 10, duration: 0.5});
+    private animateText() {
+        gsap.to(this, { alpha: 1, yoyo: true, repeat: 10, duration: 0.5 });
     }
 
 

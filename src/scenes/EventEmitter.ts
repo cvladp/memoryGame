@@ -2,7 +2,7 @@ export class EventEmitter {
   private static instance: EventEmitter;
   private listeners: { [event: string]: Array<(data?: any) => void> } = {};
 
-  private constructor() {}
+  private constructor() { }
 
   static getInstance(): EventEmitter {
     if (!EventEmitter.instance) {
