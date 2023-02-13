@@ -1,11 +1,12 @@
 import { Container, Sprite } from "pixi.js";
 import * as PIXI from 'pixi.js';
 import { Figure } from "./Figure";
-import { Counter } from "./Counter";
+import { CompareCounter } from "./CompareCounter";
 import { EndPopup } from "./EndPopup";
 import { AssetsName } from "../system/AssetsName";
 import { EventEmitter } from "./EventEmitter";
 import { NotificationNames } from "../system/NotificationNames";
+import { BestScoreCounter } from "./BestScoreCounter";
 
 
 export class GridBackground extends Container {
@@ -16,7 +17,8 @@ export class GridBackground extends Container {
     private _figure: Figure[];
     private _firstPick: Figure | null = null;
     private _secondPick: Figure | null = null;
-    private _counter: Counter;
+    private _counter: CompareCounter;
+    private _bestScoreCounter: BestScoreCounter;
     private _endPopup: EndPopup;
     private static numberOfSimbols = 12;
     private gridContainer: PIXI.Container;
@@ -33,7 +35,8 @@ export class GridBackground extends Container {
         this._background.drawRect(0, 0, 1820, 980);
         this._background.endFill();
         this._figure = [];
-        this._counter = new Counter();
+        this._counter = new CompareCounter();
+        this._bestScoreCounter = new BestScoreCounter();
         this._endPopup = new EndPopup(1820, 980);
         this._endPopup.clickOnReset = this.resetBtnClickHandler.bind(this);
 
@@ -46,14 +49,17 @@ export class GridBackground extends Container {
     private onAddedToStage() {
         this.populateGridWithFigures();
         this.addChild(this._background);
-        this.addCounter();
+        this.addCounters();
         this.addChild(this._endPopup);
     }
 
-    private addCounter() {
+    private addCounters() {
         this._counter.x = this._background.x + 75;
         this._counter.y = this._background.y + this._counter.height;
+        this._bestScoreCounter.x = this._counter.x + 25;
+        this._bestScoreCounter.y = this._counter.y + this._counter.height * 3;
         this._background.addChild(this._counter);
+        this._background.addChild(this._bestScoreCounter);
     }
 
     private resetBtnClickHandler(): void {
@@ -182,6 +188,10 @@ export class GridBackground extends Container {
 
     private handleEndGame(): void {
         this._endPopup.playEndAnimation(this._counter.getCounterValues());
+        if(this._counter.getCounterValues() < this._bestScoreCounter.getCounterValue()){
+            this._bestScoreCounter.setCounterValue(this._counter.getCounterValues());
+        }
+
     }
 
 }
