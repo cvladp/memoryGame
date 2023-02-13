@@ -1,12 +1,12 @@
 import * as PIXI from 'pixi.js';
 import gsap from "gsap";
+import { EventEmitter } from './EventEmitter';
+import { NotificationNames } from '../system/NotificationNames';
 export class EndPopup extends PIXI.Container {
 
     private _background: PIXI.Graphics;
     private message: PIXI.Text;
     private resetBTN: PIXI.Graphics;
-
-    public clickOnReset: Function;
 
     constructor(width: number, height: number) {
         super();
@@ -100,10 +100,10 @@ export class EndPopup extends PIXI.Container {
             alpha: 0.75, duration: 0.1, y: this.resetBTN.y + 5, onComplete: () => {
                 gsap.to(this.resetBTN, {
                     alpha: 1, duration: 0.1, y: this.resetBTN.y - 5, onComplete: () => {
-                        this.clickOnReset(this);
                         this._background.alpha = 0;
                         this.resetBTN.interactive = false;
                         this.resetBTN.buttonMode = false;
+                        EventEmitter.getInstance().emit(NotificationNames.RESET_BTN_CLICLED_NOTIFICATION);
                     }
                 })
             }

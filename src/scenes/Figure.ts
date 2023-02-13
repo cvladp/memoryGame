@@ -34,8 +34,10 @@ export class Figure extends Container {
             fontSize: 100,
             fill: 0x0c8004,
             align: 'center',
+            fontWeight:'bolder'
         });
 
+        this._squareMask.lineStyle(5, 0xFFBD01, 1);
         this._squareMask.beginFill(0xc7adff);
         this._squareMask.drawRect(0, 0, 200, 200);
         this._squareMask.endFill();

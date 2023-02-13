@@ -38,11 +38,11 @@ export class GridBackground extends Container {
         this._counter = new CompareCounter();
         this._bestScoreCounter = new BestScoreCounter();
         this._endPopup = new EndPopup(1820, 980);
-        this._endPopup.clickOnReset = this.resetBtnClickHandler.bind(this);
 
         this.onAddedToStage();
 
         EventEmitter.getInstance().on(NotificationNames.FIGURE_CLICKED_NOTIFICATION, this.figureClickedEvent.bind(this));
+        EventEmitter.getInstance().on(NotificationNames.RESET_BTN_CLICLED_NOTIFICATION, this.resetBtnClickHandler.bind(this));
     }
 
 
