@@ -76,7 +76,7 @@ export class EndPopup extends PIXI.Container {
         this.message.text = 'Congratulations !\nYou solved the game in ' + guesses.toString() + ' comparisons.';
         this.positionText();
         this._background.y = -500;
-        gsap.to(this._background, { alpha: 1, duration: 2, y: 0, onComplete: this.showResetButton.bind(this) });
+        gsap.to(this._background, { alpha: 1, duration: 1, y: 0, onComplete: this.showResetButton.bind(this) });
     }
 
     private positionText(): void {
