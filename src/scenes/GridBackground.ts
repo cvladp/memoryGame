@@ -7,7 +7,7 @@ import { AssetsName } from "../system/AssetsName";
 import { EventEmitter } from "./EventEmitter";
 import { NotificationNames } from "../system/NotificationNames";
 import { BestScoreCounter } from "./BestScoreCounter";
-
+import gsap from "gsap";
 
 export class GridBackground extends Container {
 
@@ -187,11 +187,12 @@ export class GridBackground extends Container {
     }
 
     private handleEndGame(): void {
-        this._endPopup.playEndAnimation(this._counter.getCounterValues());
-        if(this._counter.getCounterValues() < this._bestScoreCounter.getCounterValue()){
-            this._bestScoreCounter.setCounterValue(this._counter.getCounterValues());
-        }
-
+        gsap.delayedCall(0.5, ()=>{
+            this._endPopup.playEndAnimation(this._counter.getCounterValues());
+            if(this._counter.getCounterValues() < this._bestScoreCounter.getCounterValue()){
+                this._bestScoreCounter.setCounterValue(this._counter.getCounterValues());
+            }
+        });
     }
 
 }
