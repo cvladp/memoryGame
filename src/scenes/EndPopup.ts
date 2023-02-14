@@ -2,11 +2,14 @@ import * as PIXI from 'pixi.js';
 import gsap from "gsap";
 import { EventEmitter } from './EventEmitter';
 import { NotificationNames } from '../system/NotificationNames';
+import { Howl } from 'howler';
+
 export class EndPopup extends PIXI.Container {
 
     private _background: PIXI.Graphics;
     private message: PIXI.Text;
     private resetBTN: PIXI.Graphics;
+    private endGameSound: Howl;
 
     constructor(width: number, height: number) {
         super();
@@ -23,6 +26,7 @@ export class EndPopup extends PIXI.Container {
         this._background.drawRect(0, 0, width, height);
         this._background.endFill();
         this._background.alpha = 0;
+        this.endGameSound =  new Howl({src: ['assets/endPopup.mp3']});
         this.addChild(this._background);
     }
 
@@ -73,10 +77,11 @@ export class EndPopup extends PIXI.Container {
     }
 
     public playEndAnimation(guesses: number): void {
+        this.endGameSound.play();
         this.message.text = 'Congratulations !\nYou solved the game in ' + guesses.toString() + ' comparisons.';
         this.positionText();
         this._background.y = -500;
-        gsap.to(this._background, { alpha: 1, duration: 1, y: 0, onComplete: this.showResetButton.bind(this) });
+        gsap.to(this._background, { alpha: 1, duration: 2, y: 0, onComplete: this.showResetButton.bind(this) });
     }
 
     private positionText(): void {

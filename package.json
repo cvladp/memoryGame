@@ -19,7 +19,9 @@
         "webpack-dev-server": "^3.11.3"
     },
     "dependencies": {
+        "@types/howler": "^2.2.7",
         "gsap": "^3.11.4",
+        "howler": "^2.2.3",
         "pixi.js": "^5.2.1"
     }
 }

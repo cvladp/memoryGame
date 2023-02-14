@@ -3,6 +3,7 @@ import * as PIXI from 'pixi.js';
 import gsap from "gsap";
 import { EventEmitter } from "./EventEmitter";
 import { NotificationNames } from "../system/NotificationNames";
+import { Howl } from 'howler';
 
 export class Figure extends Container {
 
@@ -12,6 +13,7 @@ export class Figure extends Container {
     private _figureID: number;
     private _texture: PIXI.Texture;
     private _sprite: PIXI.Sprite;
+    private _clickSound: Howl;
 
     constructor(id: number, texture: PIXI.Texture) {
         super();
@@ -21,6 +23,7 @@ export class Figure extends Container {
         this._wasGuessed = false;
         this._figureID = id;
         this._texture = texture;
+        this._clickSound =  new Howl({src: ['assets/flip.mp3']});
         this.setupSprite();
         this.setupFigure();
 
@@ -65,6 +68,7 @@ export class Figure extends Container {
     }
 
     private onFigureClicked(): void {
+        this._clickSound.play();
         this._squareMask.interactive = false;
         gsap.to(this._squareMask, {
             alpha: 0, duration: 0.25, onComplete: () => {
