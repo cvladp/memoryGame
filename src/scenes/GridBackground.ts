@@ -11,8 +11,6 @@ import gsap from "gsap";
 
 export class GridBackground extends Container {
 
-    private pixiApp: PIXI.Application;
-
     private _background: PIXI.Graphics;
     private _figure: Figure[];
     private _firstPick: Figure | null = null;
@@ -22,13 +20,13 @@ export class GridBackground extends Container {
     private _endPopup: EndPopup;
     private static numberOfSimbols = 12;
     private gridContainer: PIXI.Container;
+    private loader: PIXI.Loader;
 
 
 
 
-    constructor(pixiApp: PIXI.Application) {
+    constructor() {
         super();
-        this.pixiApp = pixiApp;
         this._background = new PIXI.Graphics;
         this._background.lineStyle(25, 0xFFBD01, 1);
         this._background.beginFill(0xC34288);
@@ -38,7 +36,7 @@ export class GridBackground extends Container {
         this._counter = new CompareCounter();
         this._bestScoreCounter = new BestScoreCounter();
         this._endPopup = new EndPopup(1820, 980);
-
+        this.loader = PIXI.Loader.shared;
         this.onAddedToStage();
 
         EventEmitter.getInstance().on(NotificationNames.FIGURE_CLICKED_NOTIFICATION, this.figureClickedEvent.bind(this));
@@ -86,7 +84,7 @@ export class GridBackground extends Container {
         let texture: PIXI.Texture;
 
         for (let i = 0, j = 0, figureID = 0; i < GridBackground.numberOfSimbols; i++, j++, figureID++) {
-            texture = this.pixiApp.loader.resources['HP' + (figureID + 1).toString()].texture;
+            texture = this.loader.resources['HP' + (figureID + 1).toString()].texture;
             this._figure[i] = new Figure(figureID, texture);
             this.gridContainer.addChild(this._figure[i]);
             if (i % 4 == 0) {
