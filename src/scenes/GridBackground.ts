@@ -53,9 +53,9 @@ export class GridBackground extends Container {
 
     private addCounters() {
         this._counter.x = this._background.x + 75;
-        this._counter.y = this._background.y + this._counter.height/2;
+        this._counter.y = 150;
         this._bestScoreCounter.x = this._counter.x + 25;
-        this._bestScoreCounter.y = this._counter.y + this._bestScoreCounter.height * 2;
+        this._bestScoreCounter.y = this._counter.y + 350;
         this._background.addChild(this._counter);
         this._background.addChild(this._bestScoreCounter);
     }
