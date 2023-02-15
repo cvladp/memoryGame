@@ -1,5 +1,4 @@
 const path = require('path')
-const { CleanWebpackPlugin } = require('clean-webpack-plugin')
 const HtmlWebpackPlugin = require('html-webpack-plugin')
 const CopyPlugin = require('copy-webpack-plugin')
 
@@ -33,8 +32,6 @@ module.exports = {
     plugins: [
         // No need to write a index.html
         new HtmlWebpackPlugin(),
-        // Do not accumulate files in ./dist
-        // new CleanWebpackPlugin(),
         // Copy assets to serve them
         new CopyPlugin([{ from: 'assets', to: 'assets' }]),
     ],
