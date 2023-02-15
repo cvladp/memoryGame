@@ -29,7 +29,7 @@ module.exports = {
     },
     plugins: [
         // No need to write a index.html
-        new HtmlWebpackPlugin(),
+        new HtmlWebpackPlugin({template: './index.html',}),
         new CleanWebpackPlugin(),
         // Copy assets to serve them
         new CopyPlugin([{ from: 'assets', to: 'assets' }]),
