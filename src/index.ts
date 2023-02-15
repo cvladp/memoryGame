@@ -44,12 +44,14 @@ class EntryPoint{
     }
 
     public startAppLoader():void{
+
+    const loader = PIXI.Loader.shared;
         for(let i = 1; i < 7; i++){
-            this.app.loader.add(AssetsName.SYMBOL_NAME+i.toString(),'assets/HP'+i+'.png');
+            loader.add(AssetsName.SYMBOL_NAME+i.toString(),'assets/HP'+i+'.png');
         }
-        this.app.loader.onStart.add(this.onLoadingStarted.bind(this));
-        this.app.loader.onComplete.add(this.onAssetsLoaded.bind(this));
-        this.app.loader.load();
+        loader.onStart.add(this.onLoadingStarted.bind(this));
+        loader.onComplete.add(this.onAssetsLoaded.bind(this));
+        loader.load();
     }
 
     private onLoadingStarted():void{

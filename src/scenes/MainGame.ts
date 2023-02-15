@@ -9,7 +9,7 @@ export class MainGame extends Container {
         super();
         this._app = app;
         this._app.renderer.backgroundColor = 0x000000;
-        this._gridBackground = new GridBackground(this._app);
+        this._gridBackground = new GridBackground();
         this.onAddedToStage();
     }
 
