@@ -23,7 +23,8 @@ export class Figure extends Container {
         this._wasGuessed = false;
         this._figureID = id;
         this._texture = texture;
-        this._clickSound =  new Howl({src: ['assets/flip.mp3']});
+        this._clickSound = new Howl({ src: ['assets/flip.mp3'] });
+        this._clickSound.volume(0.25);
         this.setupSprite();
         this.setupFigure();
 
@@ -37,7 +38,7 @@ export class Figure extends Container {
             fontSize: 100,
             fill: 0x0c8004,
             align: 'center',
-            fontWeight:'bolder'
+            fontWeight: 'bolder'
         });
 
         this._squareMask.lineStyle(5, 0xFFBD01, 1);
