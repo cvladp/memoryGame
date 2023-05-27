@@ -15,7 +15,7 @@ export class GridBackground extends Container {
     private _figure: Figure[];
     private _firstPick: Figure | null = null;
     private _secondPick: Figure | null = null;
-    private _counter: CompareCounter;
+    private _comparesCounter: CompareCounter;
     private _bestScoreCounter: BestScoreCounter;
     private _endPopup: EndPopup;
     private static numberOfSimbols = 12;
@@ -33,8 +33,8 @@ export class GridBackground extends Container {
         this._background.drawRect(0, 0, 1820, 980);
         this._background.endFill();
         this._figure = [];
-        this._counter = new CompareCounter(0);
-        this._bestScoreCounter = new BestScoreCounter(99);
+        this._comparesCounter = new CompareCounter(0);
+        this._bestScoreCounter = new BestScoreCounter(Number.MAX_SAFE_INTEGER);
         this._endPopup = new EndPopup(1820, 980);
         this.loader = PIXI.Loader.shared;
         this.onAddedToStage();
@@ -52,11 +52,11 @@ export class GridBackground extends Container {
     }
 
     private addCounters() {
-        this._counter.x = this._background.x + 75;
-        this._counter.y = 150;
-        this._bestScoreCounter.x = this._counter.x + 25;
-        this._bestScoreCounter.y = this._counter.y + 350;
-        this._background.addChild(this._counter);
+        this._comparesCounter.x = this._background.x + 75;
+        this._comparesCounter.y = 150;
+        this._bestScoreCounter.x = this._comparesCounter.x + 25;
+        this._bestScoreCounter.y = this._comparesCounter.y + 350;
+        this._background.addChild(this._comparesCounter);
         this._background.addChild(this._bestScoreCounter);
     }
 
@@ -66,7 +66,7 @@ export class GridBackground extends Container {
     }
 
     private resetCounter() {
-        this._counter.resetCounter();
+        this._comparesCounter.setCounterValue(0);
     }
 
     private resetGrid() {
@@ -139,7 +139,7 @@ export class GridBackground extends Container {
         }
 
         if (this._secondPick != null) {
-            this._counter.incrementCounter();
+            this._comparesCounter.incrementCounter();
             this.checkMatch();
         }
     }
@@ -188,10 +188,10 @@ export class GridBackground extends Container {
 
     private handleEndGame(): void {
         gsap.delayedCall(0.5, () => {
-            this._endPopup.playEndAnimation(this._counter.getCounterValue());
+            this._endPopup.playEndAnimation(this._comparesCounter.getCounterValue());
             gsap.to(this._background, { y: window.outerHeight, alpha: 0, duration: 2 });
-            if (this._counter.getCounterValue() < this._bestScoreCounter.getCounterValue()) {
-                this._bestScoreCounter.setCounterValue(this._counter.getCounterValue());
+            if (this._comparesCounter.getCounterValue() < this._bestScoreCounter.getCounterValue()) {
+                this._bestScoreCounter.setCounterValue(this._comparesCounter.getCounterValue());
             }
         });
     }
