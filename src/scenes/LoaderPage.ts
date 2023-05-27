@@ -33,8 +33,8 @@ export class LoaderPage extends PIXI.Container {
         this.addChild(this.loadingText);
         this.animateText();
 
-        this.loadingText.x = this.width / 2 - this.loadingText.width / 2;
-        this.loadingText.y = this.height / 2 - this.loadingText.height / 2;
+        this.loadingText.x = this.width / 2 - this.loadingText.width;
+        this.loadingText.y = this.height / 2 - this.loadingText.height;
     }
 
     /** 
