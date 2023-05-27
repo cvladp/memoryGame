@@ -33,8 +33,8 @@ export class GridBackground extends Container {
         this._background.drawRect(0, 0, 1820, 980);
         this._background.endFill();
         this._figure = [];
-        this._counter = new CompareCounter();
-        this._bestScoreCounter = new BestScoreCounter();
+        this._counter = new CompareCounter(0);
+        this._bestScoreCounter = new BestScoreCounter(99);
         this._endPopup = new EndPopup(1820, 980);
         this.loader = PIXI.Loader.shared;
         this.onAddedToStage();
@@ -187,11 +187,11 @@ export class GridBackground extends Container {
     }
 
     private handleEndGame(): void {
-        gsap.delayedCall(0.5, ()=>{
-            this._endPopup.playEndAnimation(this._counter.getCounterValues());
-            gsap.to(this._background,{y:window.outerHeight, alpha: 0, duration: 2});
-            if(this._counter.getCounterValues() < this._bestScoreCounter.getCounterValue()){
-                this._bestScoreCounter.setCounterValue(this._counter.getCounterValues());
+        gsap.delayedCall(0.5, () => {
+            this._endPopup.playEndAnimation(this._counter.getCounterValue());
+            gsap.to(this._background, { y: window.outerHeight, alpha: 0, duration: 2 });
+            if (this._counter.getCounterValue() < this._bestScoreCounter.getCounterValue()) {
+                this._bestScoreCounter.setCounterValue(this._counter.getCounterValue());
             }
         });
     }
