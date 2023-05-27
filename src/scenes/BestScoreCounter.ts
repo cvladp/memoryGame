@@ -1,16 +1,9 @@
 import * as PIXI from 'pixi.js';
+import { AbstractCounter } from './AbstactCounter';
 
-export class BestScoreCounter extends PIXI.Container {
-    private counterText: PIXI.Text;
-    private counterValueText: PIXI.Text;
-    private counterValue: number;
-    constructor() {
-        super();
-        this.counterValue = 99;
-        this.setCounterText();
-    }
+export class BestScoreCounter extends AbstractCounter {
 
-    private setCounterText(): void {
+    setCounterText(): void {
         let textStyle = new PIXI.TextStyle({
             dropShadowColor: "#0d0202",
             fill: [
@@ -37,21 +30,11 @@ export class BestScoreCounter extends PIXI.Container {
         this.addChild(this.counterValueText);
     }
 
-    private updateCounterPosition(): void {
-        this.counterValueText.x = this.counterText.width / 2 - this.counterValueText.width / 2;
-    }
-
-    private updateCounterValueText() {
-        this.counterValueText.text = this.counterValue.toString();
-    }
-
-    public setCounterValue(value:number): void {
+    public setCounterValue(value: number): void {
         this.counterValue = value;
         this.updateCounterValueText();
         this.updateCounterPosition();
     }
 
-    public getCounterValue(): number {
-        return this.counterValue;
-    }
+
 }
